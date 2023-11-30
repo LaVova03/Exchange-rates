@@ -1,0 +1,56 @@
+.Header {
+    padding: 20px;
+}
+
+.header__courses {
+    width: 80%;
+    display: block;
+    text-align: left;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.header__red {
+    color: red;
+    font-weight: 600;
+}
+
+.header__div__logo {
+    display: flex;
+    font-size: 30px;
+    align-items: center;
+}
+
+.header__img {
+    width: 70px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 30%;
+    margin: 20px;
+    background: rgb(70, 69, 69);
+}
+
+th {
+    border-top: 1px solid #ddd;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.header__logo__flags {
+    width: 50px;
+    height: 30px;
+    margin: 0px 12px 0 0px;
+}
+
+.header__td__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

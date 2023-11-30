@@ -1,0 +1,12 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.Main {
+  text-align: center;
+  background: black;
+  color: white;
+  height: 700px;
+}

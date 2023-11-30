@@ -1,0 +1,84 @@
+.Conversion {
+    background: rgb(70, 69, 69);
+    width: 50%;
+    display: block;
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 250px;
+    padding-top: 30px;
+}
+
+
+.custom-number-input {
+    position: relative;
+}
+
+.custom-number-input input {
+    width: 400px;
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 20px;
+    background: rgb(70, 69, 69);
+    color: white;
+    border: 1px solid white;
+}
+
+.custom-number-input select {
+    position: absolute;
+    top: 0;
+    right: 72px;
+    bottom: 0;
+    padding: 8px;
+    border: 1px solid rgb(255, 255, 255);
+    background: rgb(70, 69, 69);
+    box-sizing: border-box;
+    cursor: pointer;
+    color: white;
+}
+
+input::placeholder {
+    color: rgba(179, 176, 176, 0.904);
+}
+
+.conversion__input2__logo {
+    position: relative;
+    width: 50px;
+    height: 30px;
+    left: -270px;
+    top: -35px;
+}
+
+.conversion__input1__logo {
+    position: relative;
+    width: 50px;
+    height: 30px;
+    left: -220px;
+    top: -79px;
+}
+
+@keyframes changeColor {
+    0% {
+        color: red;
+    }
+
+    25% {
+        color: blue;
+    }
+
+    50% {
+        color: green;
+    }
+
+    75% {
+        color: orange;
+    }
+
+    100% {
+        color: red;
+    }
+}
+
+h1 {
+    animation: changeColor 4s infinite;
+}
