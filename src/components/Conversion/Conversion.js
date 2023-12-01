@@ -4,12 +4,15 @@ import Eur from '../../assets/Europe.png';
 import Usa from '../../assets/usa.png';
 import Ukr from '../../assets/Ukr.webp';
 import { API_URL } from '../../constans/Constants';
+import Fetch from '../../fetches/Fetch';
 
 const Conversion = () => {
 
-    const [inputValue, setInputValue] = useState(null);
+    const { data, loading, error } = Fetch(API_URL);
 
-    const [inputValue2, setInputValue2] = useState(null);
+    const [inputValue, setInputValue] = useState('');
+
+    const [inputValue2, setInputValue2] = useState('');
 
     const [selectedCurrency, setSelectedCurrency] = useState({
         select1: 'usd',
@@ -19,6 +22,7 @@ const Conversion = () => {
     const [exchangeRate, setExchangeRate] = useState({
         usd: '',
         eur: '',
+        uah: 1,
     });
     const [results, setResults] = useState({
         result1: 0,
@@ -26,53 +30,35 @@ const Conversion = () => {
     })
 
     useEffect(() => {
-        if (exchangeRate.usd === '') {
-            fetchExchangeRate()
+
+        const calculateResult = (res, inp) => {
+            let keySelect1 = null;
+            let keySelect2 = null;
+            for (let item in exchangeRate) {
+                if (selectedCurrency.select1 === item) {
+                    keySelect1 = exchangeRate[item]
+                } else if (selectedCurrency.select2 === item) {
+                    keySelect2 = exchangeRate[item]
+                }
+                setResults((prevResults) => ({
+                    ...prevResults,
+                    [res]: inp === inputValue ? inp * keySelect1 / keySelect2 : inp * keySelect2 / keySelect1,
+                }))
+            }
         }
 
-        const setResult = () => {
-            setResults((prevResults) => ({
-                ...prevResults,
-                result1: selectedCurrency.select1 === 'usd' && selectedCurrency.select2 === 'uah' ? +exchangeRate.usd * +inputValue :
-                    selectedCurrency.select1 === 'eur' && selectedCurrency.select2 === 'uah' ? +exchangeRate.eur * +inputValue :
-                        selectedCurrency.select1 === 'uah' && selectedCurrency.select2 === 'usd' ? +inputValue / +exchangeRate.usd :
-                            selectedCurrency.select1 === 'uah' && selectedCurrency.select2 === 'eur' ? +inputValue / +exchangeRate.eur :
-                                selectedCurrency.select1 === 'usd' && selectedCurrency.select2 === 'eur' ? +inputValue * +exchangeRate.usd / +exchangeRate.eur :
-                                    selectedCurrency.select1 === 'eur' && selectedCurrency.select2 === 'usd' ? +inputValue * +exchangeRate.eur / +exchangeRate.usd : 0
-            }))
-        }
+        calculateResult('result1', inputValue)
+        calculateResult('result2', inputValue2)
 
-        const setResult2 = () => {
-            setResults((prevResults) => ({
-                ...prevResults,
-                result2: selectedCurrency.select2 === 'usd' && selectedCurrency.select1 === 'uah' ? +exchangeRate.usd * +inputValue2 :
-                    selectedCurrency.select2 === 'eur' && selectedCurrency.select1 === 'uah' ? +exchangeRate.eur * +inputValue2 :
-                        selectedCurrency.select2 === 'uah' && selectedCurrency.select1 === 'usd' ? +inputValue2 / +exchangeRate.usd :
-                            selectedCurrency.select2 === 'uah' && selectedCurrency.select1 === 'eur' ? +inputValue2 / +exchangeRate.eur :
-                                selectedCurrency.select2 === 'usd' && selectedCurrency.select1 === 'eur' ? +inputValue2 * +exchangeRate.usd / +exchangeRate.eur :
-                                    selectedCurrency.select2 === 'eur' && selectedCurrency.select1 === 'usd' ? +inputValue2 * +exchangeRate.eur / +exchangeRate.usd : 0
-            }))
-        }
+    }, [inputValue, inputValue2]);
 
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
-        setResult();
-        setResult2();
-    }, [inputValue, inputValue2, exchangeRate, selectedCurrency]);
-
-    const fetchExchangeRate = async () => {
-        try {
-            const response = await fetch(API_URL);
-            const data = await response.json();
-
-            setExchangeRate({
-                ...exchangeRate,
-                usd: data[24].rate,
-                eur: data[31].rate,
-            });
-        } catch (error) {
-            console.error('Error fetching exchange rates:', error);
-        }
-    };
+    if (error) {
+        return <p>Error: {error.message}</p>;
+    }
 
     const handleCurrencyChange = (event) => {
         setSelectedCurrency({
@@ -92,11 +78,20 @@ const Conversion = () => {
         setInputValue2('');
     };
 
+    const addExchange = () => {
+        setExchangeRate({
+            ...exchangeRate,
+            usd: data[24].rate,
+            eur: data[31].rate,
+        });
+    }
+
     const handleInput1Change = (event) => {
         const inputText = event.target.value;
         const filteredValue = inputText.replace(/[^0-9]/g, '');
         setInputValue(filteredValue);
         setInputValue2('');
+        addExchange();
     }
 
     const handleInput2Change = (event) => {
@@ -104,6 +99,7 @@ const Conversion = () => {
         const filteredValue = inputText.replace(/[^0-9]/g, '');
         setInputValue2(filteredValue);
         setInputValue('');
+        addExchange();
     }
 
     return (

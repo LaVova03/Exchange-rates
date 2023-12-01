@@ -32,6 +32,10 @@ table {
     background: rgb(70, 69, 69);
 }
 
+tbody {
+    border: 0;
+}
+
 th {
     border-top: 1px solid #ddd;
 }
@@ -39,7 +43,7 @@ th {
 th,
 td {
     border-bottom: 1px solid #ddd;
-    padding: 8px;
+    height: 50px;
     text-align: center;
 }
 
