@@ -8,7 +8,7 @@ import Fetch from '../../fetches/Fetch';
 
 const Conversion = () => {
 
-    const { data, loading, error } = Fetch(API_URL);
+    const { exchangeRate, loading, error } = Fetch(API_URL);
 
     const [inputValue, setInputValue] = useState('');
 
@@ -19,11 +19,6 @@ const Conversion = () => {
         select2: 'uah',
     });
 
-    const [exchangeRate, setExchangeRate] = useState({
-        usd: '',
-        eur: '',
-        uah: 1,
-    });
     const [results, setResults] = useState({
         result1: 0,
         result2: 0,
@@ -78,20 +73,11 @@ const Conversion = () => {
         setInputValue2('');
     };
 
-    const addExchange = () => {
-        setExchangeRate({
-            ...exchangeRate,
-            usd: data[24].rate,
-            eur: data[31].rate,
-        });
-    }
-
     const handleInput1Change = (event) => {
         const inputText = event.target.value;
         const filteredValue = inputText.replace(/[^0-9]/g, '');
         setInputValue(filteredValue);
         setInputValue2('');
-        addExchange();
     }
 
     const handleInput2Change = (event) => {
@@ -99,7 +85,6 @@ const Conversion = () => {
         const filteredValue = inputText.replace(/[^0-9]/g, '');
         setInputValue2(filteredValue);
         setInputValue('');
-        addExchange();
     }
 
     return (
